@@ -1,0 +1,6 @@
+../Core/Src/menu.c:14:16:num_key_scan	8	static
+../Core/Src/menu.c:112:12:num_key	56	static
+../Core/Src/menu.c:213:13:set_flow_num	16	static
+../Core/Src/menu.c:234:13:set_flow_limit	16	static
+../Core/Src/menu.c:255:13:set_time_limit	16	static
+../Core/Src/menu.c:276:6:check_menu	8	static

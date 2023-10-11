@@ -1,0 +1,6 @@
+../Core/Src/detecting.c:15:13:start_timer	8	static
+../Core/Src/detecting.c:24:13:stop_timer	8	static
+../Core/Src/detecting.c:30:13:add_detection	8	static
+../Core/Src/detecting.c:62:13:reduce_detection	8	static
+../Core/Src/detecting.c:94:6:check_detection	8	static
+../Core/Src/detecting.c:109:6:check_flow	8	static
