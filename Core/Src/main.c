@@ -48,21 +48,17 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
 int flow_num = 0;//current flow number
 int flow_limit = 0;//flow Number limit
 int time_limit = 0;//stay time limit
+int time_count = 0;//stay time count
 uint8_t menu = 0;//menu selection 1-set current flow number 2-set flow number limit 3-set stay time limit
 uint8_t detection = 0;//detection trigger 1-first signal 2-second signal
-uint8_t time_warning = 0;//time warning trigger
-
-
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
-
 //initialize and show start page
 static void main_init(void)
 {
@@ -85,7 +81,6 @@ static void main_init(void)
 	oled_draw_ASCII(0, 48, " Initializing...", SET, LEFT);
 	HAL_Delay(500);
 
-	HAL_GPIO_WritePin(ALARM_GPIO_Port, ALARM_Pin, GPIO_PIN_RESET);
 	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
 
 	oled_fill();
@@ -99,11 +94,6 @@ static void main_init(void)
 void main_show(void)
 {
 	oled_clear();
-
-	if (flow_num > 99999999)
-		flow_num = 99999999;
-	if (flow_num < 0)
-		flow_num = 0;
 
 	static char flow_num_char[8];
 	sprintf(flow_num_char, "%d", flow_num);
@@ -120,7 +110,6 @@ void main_show(void)
 	oled_draw_ASCII(0, 48, "MaxTime:", SET, LEFT);
 	oled_draw_ASCII(120, 48, time_limit_char, SET, RIGHT);
 }
-
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -168,7 +157,7 @@ int main(void)
   {
 	check_menu();
 	check_detection();
-	check_flow();
+	check_flow_num();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

@@ -6,16 +6,30 @@
 extern int flow_num;
 extern int flow_limit;
 extern int time_limit;
+extern int time_count;
 extern uint8_t detection;
-extern uint8_t time_warning;
-extern uint8_t timer;
 extern TIM_HandleTypeDef htim2;
+static int time_refresh;
+
+//refresh main page
+static void detection_show(void)
+{
+	oled_area_clear(0, 16, 128, 16);
+	static char flow_num_char[8];
+	sprintf(flow_num_char, "%d", flow_num);
+	oled_draw_ASCII(120, 16, flow_num_char, SET, RIGHT);
+
+	oled_area_clear(0, 48, 128, 16);
+	static char time_limit_char[8];
+	sprintf(time_limit_char, "%d", time_limit);
+	oled_draw_ASCII(0, 48, "MaxTime:", SET, LEFT);
+	oled_draw_ASCII(120, 48, time_limit_char, SET, RIGHT);
+}
 
 //start timer
 static void start_timer(void)
 {
 	HAL_TIM_Base_Init(&htim2);
-	__HAL_TIM_SET_AUTORELOAD(&htim2, time_limit*2000-1);
 	__HAL_TIM_CLEAR_IT(&htim2, TIM_IT_UPDATE);
 	HAL_TIM_Base_Start_IT(&htim2);
 }
@@ -30,17 +44,45 @@ static void stop_timer(void)
 static void add_detection(void)
 {
 	detection = 0;
+	time_count = 0;
+	time_refresh = -1;
+	oled_area_clear(0, 48, 128, 16);
 	start_timer();
 	while (detection == 0)
 	{
-		if (time_warning == 1)
+		if (time_count >= time_limit)
 		{
+			if (time_refresh != time_count)
+			{
+				oled_area_clear(40, 48, 88, 16);
+
+				static char time_current_char[8];
+				sprintf(time_current_char, "%d", time_limit-time_count);
+				oled_draw_ASCII(0, 48, "Time:", SET, LEFT);
+				oled_draw_ASCII(120, 48, time_current_char, SET, RIGHT);
+
+				time_refresh = time_count;
+			}
+
 			HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_SET);
 			HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
 			HAL_GPIO_WritePin(ALARM_GPIO_Port, ALARM_Pin, GPIO_PIN_SET);
+			HAL_Delay(200);
 		}
 		else
 		{
+			if (time_refresh != time_count)
+			{
+				oled_area_clear(40, 48, 88, 16);
+
+				static char time_current_char[8];
+				sprintf(time_current_char, "%d", time_limit-time_count);
+				oled_draw_ASCII(0, 48, "Time:", SET, LEFT);
+				oled_draw_ASCII(120, 48, time_current_char, SET, RIGHT);
+
+				time_refresh = time_count;
+			}
+
 			HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
 			HAL_Delay(100);
 			HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_SET);
@@ -48,31 +90,58 @@ static void add_detection(void)
 		}
 	}
 	stop_timer();
-	time_warning = 0;
-	HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
-	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
-	HAL_GPIO_WritePin(ALARM_GPIO_Port, ALARM_Pin, GPIO_PIN_RESET);
 	if (detection == 2)
 		flow_num++;
 	detection = 0;
-	main_show();
+	HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(ALARM_GPIO_Port, ALARM_Pin, GPIO_PIN_RESET);
+	detection_show();
 }
 
 //reduce flow number detection
 static void reduce_detection(void)
 {
 	detection = 0;
+	time_count = 0;
+	time_refresh = -1;
+	oled_area_clear(0, 48, 128, 16);
 	start_timer();
 	while (detection == 0)
 	{
-		if (time_warning == 1)
+		if (time_count >= time_limit)
 		{
+			if (time_refresh != time_count)
+			{
+				oled_area_clear(40, 48, 88, 16);
+
+				static char time_current_char[8];
+				sprintf(time_current_char, "%d", time_limit-time_count);
+				oled_draw_ASCII(0, 48, "Time:", SET, LEFT);
+				oled_draw_ASCII(120, 48, time_current_char, SET, RIGHT);
+
+				time_refresh = time_count;
+			}
+
 			HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_SET);
 			HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
 			HAL_GPIO_WritePin(ALARM_GPIO_Port, ALARM_Pin, GPIO_PIN_SET);
+			HAL_Delay(200);
 		}
 		else
 		{
+			if (time_refresh != time_count)
+			{
+				oled_area_clear(40, 48, 88, 16);
+
+				static char time_current_char[8];
+				sprintf(time_current_char, "%d", time_limit-time_count);
+				oled_draw_ASCII(0, 48, "Time:", SET, LEFT);
+				oled_draw_ASCII(120, 48, time_current_char, SET, RIGHT);
+
+				time_refresh = time_count;
+			}
+
 			HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
 			HAL_Delay(100);
 			HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_SET);
@@ -80,14 +149,13 @@ static void reduce_detection(void)
 		}
 	}
 	stop_timer();
-	time_warning = 0;
-	HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
-	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
-	HAL_GPIO_WritePin(ALARM_GPIO_Port, ALARM_Pin, GPIO_PIN_RESET);
 	if (detection == 1)
 		flow_num--;
 	detection = 0;
-	main_show();
+	HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(ALARM_GPIO_Port, ALARM_Pin, GPIO_PIN_RESET);
+	detection_show();
 }
 
 //check whether trigger detection
@@ -106,7 +174,7 @@ void check_detection(void)
 }
 
 //check whether flow number over the limit
-void check_flow(void)
+void check_flow_num(void)
 {
 	if (flow_num > flow_limit)
 	{
