@@ -4,10 +4,10 @@
 #include "detecting.h"
 #include <stdio.h>
 
-extern int flow_num;
-extern int flow_limit;
-extern int time_limit;
-extern uint8_t menu;
+extern int flow_num;//flow number
+extern int flow_limit;//flow number limit
+extern int time_limit;//stay time limit
+extern uint8_t menu;//menu selection
 static uint8_t menu_current;//current menu selection
 
 //scan number keyboard
@@ -215,7 +215,7 @@ static void set_flow_num(void)
 	menu_current = menu;
 	HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_SET);
 	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
-	HAL_GPIO_WritePin(ALARM_GPIO_Port, ALARM_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(ALARM_GPIO_Port, ALARM_Pin, GPIO_PIN_SET);
 	oled_clear();
 	oled_draw_ASCII(0, 0, "Set Flow Number", SET, LEFT);
 	flow_num = num_key(flow_num);
@@ -236,7 +236,7 @@ static void set_flow_limit(void)
 	menu_current = menu;
 	HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_SET);
 	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
-	HAL_GPIO_WritePin(ALARM_GPIO_Port, ALARM_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(ALARM_GPIO_Port, ALARM_Pin, GPIO_PIN_SET);
 	oled_clear();
 	oled_draw_ASCII(0, 0, "Set Flow Limit", SET, LEFT);
 	flow_limit = num_key(flow_limit);
@@ -257,7 +257,7 @@ static void set_time_limit(void)
 	menu_current = menu;
 	HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_SET);
 	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
-	HAL_GPIO_WritePin(ALARM_GPIO_Port, ALARM_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(ALARM_GPIO_Port, ALARM_Pin, GPIO_PIN_SET);
 	oled_clear();
 	oled_draw_ASCII(0, 0, "Set Time Limit", SET, LEFT);
 	time_limit = num_key(time_limit);

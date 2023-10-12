@@ -48,9 +48,9 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-int flow_num = 0;//current flow number
-int flow_limit = 0;//flow Number limit
-int time_limit = 0;//stay time limit
+int flow_num = 0;//flow number
+int flow_limit = 10;//flow number limit
+int time_limit = 3;//stay time limit
 int time_count = 0;//stay time count
 uint8_t menu = 0;//menu selection 1-set current flow number 2-set flow number limit 3-set stay time limit
 uint8_t detection = 0;//detection trigger 1-first signal 2-second signal

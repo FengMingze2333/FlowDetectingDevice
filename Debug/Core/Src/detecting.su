@@ -1,7 +1,7 @@
-../Core/Src/detecting.c:15:13:detection_show	16	static
-../Core/Src/detecting.c:30:13:start_timer	8	static
-../Core/Src/detecting.c:38:13:stop_timer	8	static
-../Core/Src/detecting.c:44:13:add_detection	16	static
-../Core/Src/detecting.c:103:13:reduce_detection	16	static
-../Core/Src/detecting.c:162:6:check_detection	8	static
-../Core/Src/detecting.c:177:6:check_flow_num	8	static
+../Core/Src/detecting.c:16:13:start_timer	8	static
+../Core/Src/detecting.c:24:13:stop_timer	8	static
+../Core/Src/detecting.c:30:13:detection_refresh	16	static
+../Core/Src/detecting.c:39:13:detection_show	16	static
+../Core/Src/detecting.c:54:13:detection_trigger	16	static
+../Core/Src/detecting.c:105:6:check_detection	8	static
+../Core/Src/detecting.c:115:6:check_flow_num	8	static

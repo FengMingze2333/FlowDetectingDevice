@@ -11,9 +11,9 @@ typedef enum
 
 //initialize OLED
 void oled_init(void);
-//on OLED
+//turn on OLED
 void oled_on(void);
-//off OLED
+//turn off OLED
 void oled_off(void);
 //enable pixel
 void oled_set_pixel(int16_t x, int16_t y);

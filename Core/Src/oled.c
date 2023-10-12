@@ -26,9 +26,9 @@ static void send_RAM(void)
 {
 	for(uint16_t i = 0; i < display_height/8; i++)
 	{
-		send_cmd(0xB0+i);	//设置页地址b0~b7
-		send_cmd(0x00);		//设置显示位置—列低地址00-0f
-		send_cmd(0x10);		//设置显示位置—列高地址10-1f
+		send_cmd(0xB0+i);
+		send_cmd(0x00);
+		send_cmd(0x10);
 		for(uint16_t j = 0; j < display_width; j++)
 		{
 				send_data(OLED_RAM[i][j]);
@@ -57,52 +57,52 @@ void oled_init(void)
 {
 	HAL_Delay(100);
 
-	send_cmd(0xAE); //关闭显示
-	send_cmd(0x20);	//设置内存寻址模式
-	send_cmd(0x10);	//页面寻址模式
-	send_cmd(0xB0);	//页面开始地址
-	send_cmd(0x00); //低列地址
-	send_cmd(0x10); //高列地址
-	send_cmd(0xC8);	//设置COM输出扫描方向
-	send_cmd(0x40); //设置起始行地址
-	send_cmd(0x81); //设置对比度
-	send_cmd(0xFF);
-	send_cmd(0xA1); //设置段重映射
-	send_cmd(0xA6); //设置正常显示
-	send_cmd(0xA8); //设置复用比
-	send_cmd(0x3F);
-	send_cmd(0xA4); //恢复内存内容显示
-	send_cmd(0xD3); //设置显示补偿
-	send_cmd(0x00);
-	send_cmd(0xD5); //设置显示时钟分比率/振荡器频率
-	send_cmd(0xF0);
-	send_cmd(0xD9); //设置预充电间隔
-	send_cmd(0x22);
-	send_cmd(0xDA); //设置COM引脚硬件配置
-	send_cmd(0x12);
-	send_cmd(0xDB); //设置VCOMH电压
+	send_cmd(0xAE);
 	send_cmd(0x20);
-	send_cmd(0x8D); //设置电荷泵
-	send_cmd(0x14); //开启电荷泵
-	send_cmd(0xAF); //打开显示
+	send_cmd(0x10);
+	send_cmd(0xB0);
+	send_cmd(0x00);
+	send_cmd(0x10);
+	send_cmd(0xC8);
+	send_cmd(0x40);
+	send_cmd(0x81);
+	send_cmd(0xFF);
+	send_cmd(0xA1);
+	send_cmd(0xA6);
+	send_cmd(0xA8);
+	send_cmd(0x3F);
+	send_cmd(0xA4);
+	send_cmd(0xD3);
+	send_cmd(0x00);
+	send_cmd(0xD5);
+	send_cmd(0xF0);
+	send_cmd(0xD9);
+	send_cmd(0x22);
+	send_cmd(0xDA);
+	send_cmd(0x12);
+	send_cmd(0xDB);
+	send_cmd(0x20);
+	send_cmd(0x8D);
+	send_cmd(0x14);
+	send_cmd(0xAF);
 
 	oled_clear();
 }
 
-//on OLED
+//turn on OLED
 void oled_on(void)
 {
-	send_cmd(0X8D);  //设置电荷泵
-	send_cmd(0X14);  //开启电荷泵
-	send_cmd(0XAF);  //打开显示
+	send_cmd(0X8D);
+	send_cmd(0X14);
+	send_cmd(0XAF);
 }
 
-//off OLED
+//turn off OLED
 void oled_off(void)
 {
-	send_cmd(0X8D);  //设置电荷泵
-	send_cmd(0X10);  //关闭电荷泵
-	send_cmd(0XAE);  //关闭显示
+	send_cmd(0X8D);
+	send_cmd(0X10);
+	send_cmd(0XAE);
 }
 
 
@@ -187,13 +187,13 @@ void oled_draw_ASCII(int16_t x, int16_t y, char arr[], FlagStatus mode, FlushSta
 		while(arr[j] != '\0')
 		{
 			c = arr[j] - 32;
-			if(c < 0)	//无效字符
+			if(c < 0)	//undefined character
 				break;
-			if(128-x < 8)//不能显示完整字符，换行显示
+			if(128-x < 8)//warp draw
 			{
 				x = 0;
 				y += 16;
-				if(64 - y < 16)	//不能显示一行时不显示
+				if(64 - y < 16)	//no more space,break
 					break;
 			}
 			for(uint8_t m = 0; m < 2; m++)
