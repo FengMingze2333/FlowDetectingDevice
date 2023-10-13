@@ -1,6 +1,0 @@
-../Core/Src/menu.c:14:16:scan_num_key	25
-../Core/Src/menu.c:112:12:get_num_key	14
-../Core/Src/menu.c:213:13:set_flow_num	2
-../Core/Src/menu.c:234:13:set_flow_limit	2
-../Core/Src/menu.c:255:13:set_time_limit	2
-../Core/Src/menu.c:276:6:menu_check_selection	4
