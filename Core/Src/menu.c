@@ -1,7 +1,7 @@
+#include <detection.h>
 #include "menu.h"
 #include "gpio.h"
 #include "oled.h"
-#include "detecting.h"
 #include <stdio.h>
 
 extern int flow_num;//flow number
@@ -11,7 +11,7 @@ extern uint8_t menu;//menu selection
 static uint8_t menu_current;//current menu selection
 
 //scan number keyboard
-static uint8_t num_key_scan(void)
+static uint8_t scan_num_key(void)
 {
 	HAL_GPIO_WritePin(NUM_KEY_O1_GPIO_Port, NUM_KEY_O1_Pin, GPIO_PIN_RESET);
 	HAL_GPIO_WritePin(NUM_KEY_O2_GPIO_Port, NUM_KEY_O2_Pin, GPIO_PIN_SET);
@@ -109,7 +109,7 @@ static uint8_t num_key_scan(void)
 }
 
 //get number keyboard input
-static int num_key(int num_current)
+static int get_num_key(int num_current)
 {
 	uint8_t num_mode = 0;
 	uint8_t num_key = 15;
@@ -132,7 +132,7 @@ static int num_key(int num_current)
 		if (menu != menu_current)
 			return num_current;
 
-		num_key = num_key_scan();
+		num_key = scan_num_key();
 		if (num_key == 14)//#
 		{
 			num_input = 0;
@@ -218,7 +218,7 @@ static void set_flow_num(void)
 	HAL_GPIO_WritePin(ALARM_GPIO_Port, ALARM_Pin, GPIO_PIN_RESET);
 	oled_clear();
 	oled_draw_ASCII(0, 0, "Set Flow Number", SET, LEFT);
-	flow_num = num_key(flow_num);
+	flow_num = get_num_key(flow_num);
 	oled_clear();
 	if (menu_current == menu)
 	{
@@ -227,7 +227,7 @@ static void set_flow_num(void)
 		main_show();
 	}
 	else
-		check_menu();
+		menu_check_selection();
 }
 
 //set flow number limit
@@ -239,7 +239,7 @@ static void set_flow_limit(void)
 	HAL_GPIO_WritePin(ALARM_GPIO_Port, ALARM_Pin, GPIO_PIN_RESET);
 	oled_clear();
 	oled_draw_ASCII(0, 0, "Set Flow Limit", SET, LEFT);
-	flow_limit = num_key(flow_limit);
+	flow_limit = get_num_key(flow_limit);
 	oled_clear();
 	if (menu_current == menu)
 	{
@@ -248,7 +248,7 @@ static void set_flow_limit(void)
 		main_show();
 	}
 	else
-		check_menu();
+		menu_check_selection();
 }
 
 //set stay time limit
@@ -260,7 +260,7 @@ static void set_time_limit(void)
 	HAL_GPIO_WritePin(ALARM_GPIO_Port, ALARM_Pin, GPIO_PIN_RESET);
 	oled_clear();
 	oled_draw_ASCII(0, 0, "Set Time Limit", SET, LEFT);
-	time_limit = num_key(time_limit);
+	time_limit = get_num_key(time_limit);
 	oled_clear();
 	if (menu_current == menu)
 	{
@@ -269,11 +269,11 @@ static void set_time_limit(void)
 		main_show();
 	}
 	else
-		check_menu();
+		menu_check_selection();
 }
 
 //check whether select menu
-void check_menu(void)
+void menu_check_selection(void)
 {
 	if (menu == 1)
 		set_flow_num();

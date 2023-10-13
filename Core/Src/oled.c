@@ -37,7 +37,7 @@ static void send_RAM(void)
 }
 
 //invert string
-static void reverse(char arr[])
+static void reverse_char(char arr[])
 {
 	int left = 0;
 	int right = strlen(arr)-1;
@@ -182,7 +182,7 @@ void oled_draw_ASCII(int16_t x, int16_t y, char arr[], FlagStatus mode, FlushSta
 		uint8_t j = 0;
 		if (flush)
 		{
-			reverse(arr);
+			reverse_char(arr);
 		}
 		while(arr[j] != '\0')
 		{

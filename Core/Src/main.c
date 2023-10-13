@@ -27,7 +27,7 @@
 #include <stdio.h>
 #include "oled.h"
 #include "menu.h"
-#include "detecting.h"
+#include "detection.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -48,12 +48,12 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-int flow_num = 0;//flow number
-int flow_limit = 10;//flow number limit
-int time_limit = 3;//stay time limit
-int time_count = 0;//stay time count
-uint8_t menu = 0;//menu selection 1-set current flow number 2-set flow number limit 3-set stay time limit
-uint8_t detection = 0;//detection trigger 1-first signal 2-second signal
+int flow_num;//flow number
+int flow_limit;//flow number limit
+int time_limit;//stay time limit
+int time_count;//stay time count
+uint8_t menu;//menu selection 1-set current flow number 2-set flow number limit 3-set stay time limit
+uint8_t detection;//detection trigger 1-first signal 2-second signal
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -64,29 +64,31 @@ static void main_init(void)
 {
 	HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
 	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
-
 	oled_init();
 	oled_fill();
-	HAL_Delay(200);
+	HAL_Delay(100);
 	oled_clear();
 	oled_draw_ASCII(0, 0, " Flow Detecting ", SET, LEFT);
-	oled_draw_ASCII(0, 16, " Device ---V1.0 ", SET, LEFT);
+	oled_draw_ASCII(0, 16, " Device ---V2.0 ", SET, LEFT);
 	oled_draw_ASCII(0, 32, " By Feng Mingze ", SET, LEFT);
-	oled_draw_ASCII(0, 48, " Initializing", SET, LEFT);
-	HAL_Delay(500);
-	oled_draw_ASCII(0, 48, " Initializing.", SET, LEFT);
-	HAL_Delay(500);
-	oled_draw_ASCII(0, 48, " Initializing..", SET, LEFT);
-	HAL_Delay(500);
-	oled_draw_ASCII(0, 48, " Initializing...", SET, LEFT);
-	HAL_Delay(500);
+	oled_draw_ASCII(0, 48, " Initializing   ", SET, LEFT);
+	HAL_Delay(100);
+	oled_draw_ASCII(0, 48, " Initializing.  ", SET, LEFT);
+	HAL_Delay(100);
+	oled_draw_ASCII(0, 48, " Initializing.. ", SET, LEFT);
+	HAL_Delay(100);
 
-	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
+	flow_num = 0;
+	flow_limit = 10;
+	time_limit = 3;
+	time_count = 0;
+	menu = 0;
+	detection = 0;
 
 	oled_fill();
-	HAL_Delay(200);
+	HAL_Delay(100);
 	oled_clear();
-
+	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
 	main_show();
 }
 
@@ -155,9 +157,36 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	check_menu();
-	check_detection();
-	check_flow_num();
+	menu_check_selection();
+	detection_check_trigger();
+
+	if (flow_num > flow_limit)
+	{
+		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(ALARM_GPIO_Port, ALARM_Pin, GPIO_PIN_SET);
+		HAL_Delay(100);
+		HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(ALARM_GPIO_Port, ALARM_Pin, GPIO_PIN_RESET);
+		HAL_Delay(100);
+	}
+	else if(flow_num < 0)
+	{
+		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(ALARM_GPIO_Port, ALARM_Pin, GPIO_PIN_SET);
+		HAL_Delay(100);
+		HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(ALARM_GPIO_Port, ALARM_Pin, GPIO_PIN_RESET);
+		HAL_Delay(100);
+
+	}
+	else
+	{
+		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(ALARM_GPIO_Port, ALARM_Pin, GPIO_PIN_RESET);
+	}
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

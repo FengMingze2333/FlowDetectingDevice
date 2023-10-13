@@ -4,6 +4,6 @@
 #include "stm32f4xx_hal.h"
 
 //check whether select menu
-void check_menu(void);
+void menu_check_selection(void);
 
 #endif

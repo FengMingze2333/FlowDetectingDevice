@@ -1,4 +1,4 @@
-Core/Src/menu.o: ../Core/Src/menu.c ../Core/Inc/menu.h \
+Core/Src/menu.o: ../Core/Src/menu.c ../Core/Inc/detection.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h \
  ../Core/Inc/stm32f4xx_hal_conf.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h \
@@ -28,9 +28,9 @@ Core/Src/menu.o: ../Core/Src/menu.c ../Core/Inc/menu.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h \
- ../Core/Inc/gpio.h ../Core/Inc/main.h ../Core/Inc/oled.h \
- ../Core/Inc/detecting.h
-../Core/Inc/menu.h:
+ ../Core/Inc/menu.h ../Core/Inc/gpio.h ../Core/Inc/main.h \
+ ../Core/Inc/oled.h
+../Core/Inc/detection.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
 ../Core/Inc/stm32f4xx_hal_conf.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h:
@@ -60,7 +60,7 @@ Core/Src/menu.o: ../Core/Src/menu.c ../Core/Inc/menu.h \
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h:
+../Core/Inc/menu.h:
 ../Core/Inc/gpio.h:
 ../Core/Inc/main.h:
 ../Core/Inc/oled.h:
-../Core/Inc/detecting.h:
