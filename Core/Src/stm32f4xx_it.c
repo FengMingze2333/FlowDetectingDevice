@@ -206,7 +206,11 @@ void SysTick_Handler(void)
 void EXTI0_IRQHandler(void)
 {
   /* USER CODE BEGIN EXTI0_IRQn 0 */
-	detection = 1;
+	HAL_Delay(10);
+	if (HAL_GPIO_ReadPin(SIG1_GPIO_Port, SIG1_Pin) == GPIO_PIN_RESET)
+	{
+		detection = 1;
+	}
   /* USER CODE END EXTI0_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(SIG1_Pin);
   /* USER CODE BEGIN EXTI0_IRQn 1 */
@@ -220,7 +224,11 @@ void EXTI0_IRQHandler(void)
 void EXTI1_IRQHandler(void)
 {
   /* USER CODE BEGIN EXTI1_IRQn 0 */
-	detection = 2;
+	HAL_Delay(10);
+	if (HAL_GPIO_ReadPin(SIG2_GPIO_Port, SIG2_Pin) == GPIO_PIN_RESET)
+	{
+		detection = 2;
+	}
   /* USER CODE END EXTI1_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(SIG2_Pin);
   /* USER CODE BEGIN EXTI1_IRQn 1 */
